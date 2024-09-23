@@ -5,6 +5,7 @@ import React from "react";
 // import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
+import { AsteroidDashboard } from "./components/AsteroidDashboard";
 import { MarsWeatherDashboard } from "./components/MarsWeather";
 // import Pricing from "./components/Pricing";
 // import Roadmap from "./components/Roadmap";
@@ -17,6 +18,7 @@ const App: React.FC = () => {
       <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
         <Header />
         <MarsWeatherDashboard />
+        <AsteroidDashboard />
         {/* <Hero /> */}
         {/* <Benefits /> */}
         {/* <Collaboration /> */}

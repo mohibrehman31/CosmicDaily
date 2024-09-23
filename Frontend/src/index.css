@@ -21,6 +21,9 @@
   body {
     @apply font-sans bg-n-8 text-n-1 text-base;
   }
+  :root {
+    --radius: 0.5rem;
+  }
 }
 
 .rotate-45 {

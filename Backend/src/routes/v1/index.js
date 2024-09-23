@@ -3,12 +3,17 @@ const express = require('express');
 const docsRoute = require('./docs.route');
 const config = require('../../config/config');
 const insightsRoute = require('./insights.route');
+const neoWRoute = require('./neoW.route');
 const router = express.Router();
 
 const defaultRoutes = [
   {
     path: '/insights',
     route: insightsRoute,
+  },
+  {
+    path: '/neoW',
+    route: neoWRoute,
   },
 ];
 
