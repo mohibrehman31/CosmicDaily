@@ -17,9 +17,9 @@ const App: React.FC = () => {
     <Provider store={store}>
       <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
         <Header />
+        <Hero />
         <MarsWeatherDashboard />
         <AsteroidDashboard />
-        {/* <Hero /> */}
         {/* <Benefits /> */}
         {/* <Collaboration /> */}
         {/* <Services /> */}

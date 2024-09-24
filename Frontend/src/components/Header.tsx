@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
-
 import { brainwave } from "../assets";
 import { navigation } from "../constants";
 import Button from "./Button";
@@ -89,7 +88,7 @@ const Header: React.FC = () => {
           px="px-3"
           onClick={toggleNavigation}
         >
-          <MenuSvg openNavigation={openNavigation} />
+          <MenuSvg openNavigation={openNavigation.toString()} />
         </Button>
       </div>
     </div>
