@@ -7,7 +7,6 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import { AsteroidDashboard } from "./components/AsteroidDashboard";
 import { MarsWeatherDashboard } from "./components/MarsWeather";
-// import Pricing from "./components/Pricing";
 // import Roadmap from "./components/Roadmap";
 // import Services from "./components/Services";
 import { Provider } from "react-redux";
@@ -23,7 +22,6 @@ const App: React.FC = () => {
         {/* <Benefits /> */}
         {/* <Collaboration /> */}
         {/* <Services /> */}
-        {/* <Pricing /> */}
         {/* <Roadmap /> */}
         {/* <Footer /> */}
       </div>

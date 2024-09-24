@@ -4,6 +4,7 @@ const docsRoute = require('./docs.route');
 const config = require('../../config/config');
 const insightsRoute = require('./insights.route');
 const neoWRoute = require('./neoW.route');
+const apodRoute = require('./apod.route');
 const router = express.Router();
 
 const defaultRoutes = [
@@ -14,6 +15,10 @@ const defaultRoutes = [
   {
     path: '/neoW',
     route: neoWRoute,
+  },
+  {
+    path: '/apod',
+    route: apodRoute,
   },
 ];
 
