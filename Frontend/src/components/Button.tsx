@@ -4,7 +4,7 @@ import ButtonSvg from "../assets/svg/ButtonSvg";
 interface ButtonProps {
   className?: string;
   href?: string;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   children: React.ReactNode;
   px?: string;
   white?: boolean;
@@ -23,21 +23,21 @@ const Button: React.FC<ButtonProps> = ({
   } ${white ? "text-n-8" : "text-n-1"} ${className || ""}`;
   const spanClasses = "relative z-10";
 
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (onClick) {
+      onClick(event);
+    }
+  };
+
   const renderButton = () => (
-    <button className={classes} onClick={onClick}>
+    <button className={classes} onClick={handleClick}>
       <span className={spanClasses}>{children}</span>
       {ButtonSvg(white as boolean)}
     </button>
   );
 
-  const renderLink = () => (
-    <a href={href} className={classes}>
-      <span className={spanClasses}>{children}</span>
-      {ButtonSvg(white as boolean)}
-    </a>
-  );
-
-  return href ? renderLink() : renderButton();
+  return renderButton();
 };
 
 export default Button;

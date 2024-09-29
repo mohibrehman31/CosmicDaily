@@ -1,11 +1,10 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import marsWeatherReducer from "../features/marsWeather/marsWeatherSlice";
-// import userReducer from "../features/user/userSlice";
+import apodReducer from "../features/apod/apodSlice";
 
 const rootReducer = combineReducers({
   marsWeather: marsWeatherReducer,
-  // user: userReducer,
-  // Add other reducers here
+  apod: apodReducer,
 });
 
 export default rootReducer;

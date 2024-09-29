@@ -8,6 +8,7 @@ const envVarsSchema = Joi.object()
   .keys({
     NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
     PORT: Joi.number().default(3000),
+    NASA_API_KEY: Joi.string().required(),
   })
   .unknown();
 
@@ -20,7 +21,7 @@ if (error) {
 module.exports = {
   env: envVars.NODE_ENV,
   nasa: {
-    apiKey: process.env.NASA_API_KEY,
+    apiKey: envVars.NASA_API_KEY,
   },
   port: envVars.PORT,
 };

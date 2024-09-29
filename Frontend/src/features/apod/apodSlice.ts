@@ -1,55 +1,57 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { MarsWeatherData } from "../../components/types";
-import { fetchMarsWeatherData } from "./apodAPI";
+import { ApodData, fetchApodData } from "./apodAPI";
+import { RootState } from "../../app/store";
 
-// Define the state type
-interface MarsWeatherState {
-  data: MarsWeatherData | null;
+interface ApodState {
+  data: ApodData | null;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
 
-const initialState: MarsWeatherState = {
+const initialApodState: ApodState = {
   data: null,
   status: "idle",
   error: null,
 };
 
-export const fetchMarsWeather = createAsyncThunk<
-  MarsWeatherData,
+export const fetchApod = createAsyncThunk<
+  ApodData,
   void,
   { rejectValue: string }
->("marsWeather/fetchMarsWeather", async (_, { rejectWithValue }) => {
+>("apod/fetchApod", async (_, { rejectWithValue }) => {
   try {
-    return await fetchMarsWeatherData();
+    return await fetchApodData();
   } catch (error) {
-    return rejectWithValue((error as Error).message || "An error occurred");
+    return rejectWithValue(
+      (error as Error).message || "Failed to fetch APOD data"
+    );
   }
 });
 
-const marsWeatherSlice = createSlice({
-  name: "marsWeather",
-  initialState,
+// Create the APOD slice
+const apodSlice = createSlice({
+  name: "apod",
+  initialState: initialApodState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchMarsWeather.pending, (state) => {
+      .addCase(fetchApod.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
       .addCase(
-        fetchMarsWeather.fulfilled,
-        (state, action: PayloadAction<MarsWeatherData>) => {
+        fetchApod.fulfilled,
+        (state, action: PayloadAction<ApodData>) => {
           state.status = "succeeded";
           state.data = action.payload;
           state.error = null;
         }
       )
-      .addCase(fetchMarsWeather.rejected, (state, action) => {
+      .addCase(fetchApod.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload ?? "An unknown error occurred";
       });
   },
 });
 
-export default marsWeatherSlice.reducer;
+export default apodSlice.reducer;
