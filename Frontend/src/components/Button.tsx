@@ -12,7 +12,6 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({
   className,
-  href,
   onClick,
   children,
   px,

@@ -16,10 +16,10 @@ const Hero: React.FC = () => {
 
   return (
     <Section
-      className="pt-[12rem] -mt-[5.25rem]"
+      className="pt-[4rem] -mt-[8.25rem]"
       crosses
       crossesOffset="lg:translate-y-[5.25rem]"
-      customPaddings
+      customPaddings="lg:pt-[8rem] lg:-mt-[8.25rem]"
       id="hero"
     >
       <div className="container relative">

@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import Button from "./Button";
 import AIGeneratingIndicator from "./AIGenereating";
-
-interface Message {
-  sender: "user" | "bot";
-  text: string;
-  isTyping?: boolean;
-}
+import {
+  Message,
+  sendMessageToRasa,
+  simulateSlowResponse,
+} from "../utils/chatUtils";
 
 const RasaChat: React.FC = () => {
   const [input, setInput] = useState("");
@@ -14,18 +13,38 @@ const RasaChat: React.FC = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isChatboxOpen, setIsChatboxOpen] = useState(false);
   const [isInitialGreeting, setIsInitialGreeting] = useState(true);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    loadChatHistory();
+  }, []);
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      scrollToBottom();
+      saveChatHistory();
     }
   }, [messages]);
 
-  const simulateSlowResponse = (text: string) => {
-    return new Promise<string>((resolve) => {
-      setTimeout(() => resolve(text), 2000 + Math.random() * 2000);
-    });
+  const scrollToBottom = () => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
+    }
+  };
+
+  const saveChatHistory = () => {
+    localStorage.setItem("chatHistory", JSON.stringify(messages));
+  };
+
+  const loadChatHistory = () => {
+    const savedMessages = localStorage.getItem("chatHistory");
+    if (savedMessages) {
+      const parsedMessages = JSON.parse(savedMessages) as Message[];
+      setMessages(parsedMessages);
+      setIsChatboxOpen(true);
+      setIsInitialGreeting(false);
+    }
   };
 
   const typeMessage = (message: string, index: number = 0) => {
@@ -48,97 +67,127 @@ const RasaChat: React.FC = () => {
     const messageToSend = customMessage || input;
     if (messageToSend.trim() === "") return;
 
-    const newMessages = [...messages, { sender: "user", text: messageToSend }];
-    setMessages(newMessages as Message[]);
-    setInput("");
-    setIsGenerating(true);
-    setIsChatboxOpen(true);
-    setIsInitialGreeting(false);
+    updateChatState(messageToSend);
 
     try {
-      const response = await fetch(
-        "http://localhost:5005/webhooks/rest/webhook",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            sender: "user",
-            message: messageToSend,
-          }),
-        }
-      );
-
-      const data = await response.json();
-      for (const msg of data) {
-        const slowResponse = await simulateSlowResponse(msg.text);
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { sender: "bot", text: "", isTyping: true },
-        ]);
-        typeMessage(slowResponse);
-      }
+      const data = await sendMessageToRasa(messageToSend);
+      await handleBotResponses(data);
     } catch (error) {
       console.error("Error:", error);
       setIsGenerating(false);
     }
   };
 
+  const updateChatState = (message: string) => {
+    setMessages((prev) => [...prev, { sender: "user", text: message }]);
+    setInput("");
+    setIsGenerating(true);
+    setIsChatboxOpen(true);
+    setIsInitialGreeting(false);
+  };
+
+  const handleBotResponses = async (responses: any[]) => {
+    for (const msg of responses) {
+      const slowResponse = await simulateSlowResponse(msg.text);
+      setMessages((prev) => [
+        ...prev,
+        { sender: "bot", text: "", isTyping: true },
+      ]);
+      typeMessage(slowResponse);
+    }
+  };
+
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      if (isInitialGreeting) {
-        sendMessage("Hi How are you?");
-      } else {
-        sendMessage();
-      }
+      sendMessage(isInitialGreeting ? "Hi How are you?" : undefined);
     }
   };
 
   return (
-    <div className="flex flex-col max-w-96 mx-auto p-4 h-full">
-      {isChatboxOpen && (
-        <div className="flex-grow overflow-auto mb-4 space-y-2 max-h-[calc(100vh-200px)]">
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`p-2 rounded-lg ${
-                message.sender === "user"
-                  ? "bg-indigo-600/70 text-white ml-auto"
-                  : "bg-gray-700/70 text-white"
-              } max-w-[80%] backdrop-blur-sm`}
-            >
-              {message.text}
-              {message.isTyping && <span className="animate-pulse">▋</span>}
-            </div>
-          ))}
-        </div>
+    <div className="flex flex-col max-w-[40rem] mx-auto p-4 h-full">
+      {(isChatboxOpen || messages.length > 0) && (
+        <ChatMessages
+          messages={messages}
+          messagesContainerRef={messagesContainerRef}
+        />
       )}
       {isGenerating && <AIGeneratingIndicator />}
-
-      <div className="flex items-center bg-gray-800/50 rounded-s-lg rounded-e-lg overflow-hidden mt-4 backdrop-blur-sm">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={handleKeyPress}
-          className="flex-grow bg-transparent text-white px-4 py-2 focus:outline-none w-96"
-          placeholder={
-            isInitialGreeting
-              ? "Send Greetings to CosmoAI. Press Enter"
-              : "Type a message..."
-          }
-        />
-        <Button
-          onClick={() =>
-            isInitialGreeting ? sendMessage("Hi How are you?") : sendMessage()
-          }
-        >
-          SEND
-        </Button>
-      </div>
+      <ChatInput
+        input={input}
+        setInput={setInput}
+        handleKeyPress={handleKeyPress}
+        isInitialGreeting={isInitialGreeting}
+        sendMessage={sendMessage}
+      />
     </div>
   );
 };
+
+const ChatMessages: React.FC<{
+  messages: Message[];
+  messagesContainerRef: React.RefObject<HTMLDivElement>;
+}> = ({ messages, messagesContainerRef }) => (
+  <div
+    ref={messagesContainerRef}
+    className="flex-grow overflow-auto mb-4 space-y-2 max-h-[calc(100vh-400px)]"
+  >
+    {messages.map(
+      (message, index) =>
+        message.text && <ChatBubble key={index} message={message} />
+    )}
+  </div>
+);
+
+const ChatBubble: React.FC<{ message: Message }> = ({ message }) => (
+  <div
+    className={`flex ${
+      message.sender === "user" ? "justify-end" : "justify-start"
+    }`}
+  >
+    <div
+      className={`p-2 rounded-lg ${
+        message.sender === "user"
+          ? "bg-indigo-600/70 text-white"
+          : "bg-gray-700/70 text-white"
+      } max-w-[75%] backdrop-blur-sm inline-block`}
+    >
+      {message.text}
+      {message.isTyping && <span className="animate-pulse">▋</span>}
+    </div>
+  </div>
+);
+
+const ChatInput: React.FC<{
+  input: string;
+  setInput: React.Dispatch<React.SetStateAction<string>>;
+  handleKeyPress: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  isInitialGreeting: boolean;
+  sendMessage: (customMessage?: string) => Promise<void>;
+}> = ({ input, setInput, handleKeyPress, isInitialGreeting, sendMessage }) => (
+  <div className="flex items-center space-x-2 mt-4">
+    <div className="flex-grow bg-gray-800/50 w-[20rem] rounded-lg overflow-hidden backdrop-blur-sm">
+      <input
+        type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyPress={handleKeyPress}
+        className="w-full bg-transparent text-white px-4 py-2 focus:outline-none"
+        placeholder={
+          isInitialGreeting
+            ? "Send Greetings By Pressing Enter"
+            : "Ask me anything..."
+        }
+      />
+    </div>
+    <Button
+      onClick={() =>
+        sendMessage(isInitialGreeting ? "Hi How are you?" : undefined)
+      }
+      white
+    >
+      SEND
+    </Button>
+  </div>
+);
 
 export default RasaChat;
