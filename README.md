@@ -1,7 +1,7 @@
 # CosmicDaily
 
 <div align="center">
-  <img src="frontend/public/Logo.png" alt="CosmicDaily Logo" width="200">
+  <img src="./Frontend/public/Logo.png" alt="CosmicDaily Logo" width="200">
 
   <p>
     <strong>Your daily dose of cosmic wonders and space exploration news</strong>
@@ -129,4 +129,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-Made with ❤️ by [Your Name/Team Name]
+Made with ❤️ by [CosmicDaily](https://github.com/CosmicDaily)
