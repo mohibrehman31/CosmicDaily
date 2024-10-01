@@ -1,5 +1,3 @@
-# CosmicDaily
-
 <div align="center">
   <img src="./Frontend/public/Logo.png" alt="CosmicDaily Logo" width="200">
 
