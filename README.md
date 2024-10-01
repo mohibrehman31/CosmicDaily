@@ -1,7 +1,7 @@
 # CosmicDaily
 
 <div align="center">
-  <img src="path/to/project/logo.png" alt="CosmicDaily Logo" width="200">
+  <img src="frontend/public/Logo.png" alt="CosmicDaily Logo" width="200">
 
   <p>
     <strong>Your daily dose of cosmic wonders and space exploration news</strong>
