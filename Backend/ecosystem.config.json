@@ -1,9 +1,9 @@
 {
   "apps": [
     {
-      "name": "app",
+      "name": "cosmo-daily-backend",
       "script": "src/index.js",
-      "instances": 1,
+      "instances": "max",
       "autorestart": true,
       "watch": false,
       "time": true,

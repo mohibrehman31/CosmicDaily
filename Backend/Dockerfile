@@ -1,15 +1,24 @@
-FROM node:alpine
+FROM node:18-alpine AS base
+WORKDIR /usr/src/app
+RUN npm install -g pnpm
 
-RUN mkdir -p /usr/src/node-app && chown -R node:node /usr/src/node-app
+FROM base AS dependencies
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
-WORKDIR /usr/src/node-app
-
-COPY package.json yarn.lock ./
-
+FROM base AS development
+COPY --from=dependencies /usr/src/app/node_modules ./node_modules
+COPY . .
+RUN chown -R node:node /usr/src/app
 USER node
+EXPOSE 3000 9229
+CMD ["pnpm", "dev"]
 
-RUN yarn install --pure-lockfile
-
-COPY --chown=node:node . .
-
+FROM base AS production
+COPY --from=dependencies /usr/src/app/node_modules ./node_modules
+COPY . .
+RUN npm install -g pm2
+RUN chown -R node:node /usr/src/app
+USER node
 EXPOSE 3000
+CMD ["pm2-runtime", "start", "ecosystem.config.json"]

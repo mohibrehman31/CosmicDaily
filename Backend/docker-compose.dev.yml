@@ -1,6 +1,16 @@
-version: '3'
+version: '3.8'
 
 services:
   node-app:
-    container_name: node-app-dev
-    command: yarn dev -L
+    build:
+      target: development
+    command: pnpm dev
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./src:/usr/src/app/src
+      - ./package.json:/usr/src/app/package.json
+      - ./pnpm-lock.yaml:/usr/src/app/pnpm-lock.yaml
+    ports:
+      - '3000:3000'
+      - '9229:9229'
