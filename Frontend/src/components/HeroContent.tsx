@@ -1,6 +1,5 @@
 import React from "react";
 import { curve } from "../assets";
-import Button from "./Button";
 import RasaChat from "./RasaChat";
 
 const HeroContent: React.FC = () => (

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { MarsWeatherData } from "../../components/types";
+import { MarsWeatherData } from "../../types";
 
 const API_KEY = "bEDbpmtVfTu3G999c4covubhMSarmGTJKF34G978";
 const BASE_URL = "http://localhost:3001/v1/insights/";

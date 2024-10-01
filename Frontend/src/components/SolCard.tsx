@@ -1,20 +1,16 @@
 import React from "react";
-import { GlassCard } from "./GlassCard";
-import { SolData } from "../types";
+import { SolData } from "../types/types";
 
 interface SolCardProps {
-  sol: string;
-  data: SolData;
+  sol: SolData;
 }
 
-export const SolCard: React.FC<SolCardProps> = ({ sol, data }) => (
-  <GlassCard>
-    <p className="font-bold text-white">Sol {sol}</p>
-    <p className="text-sm text-white">
-      {new Date(data.First_UTC).toLocaleDateString()}
-    </p>
-    <p className="mt-2 text-white">High: {data.AT.mx.toFixed(1)}° C</p>
-    <p className="text-white">Low: {data.AT.mn.toFixed(1)}° C</p>
-    <p className="text-white">Wind: {data.WD.most_common.compass_point}</p>
-  </GlassCard>
+export const SolCard: React.FC<SolCardProps> = ({ sol }) => (
+  <div className="sol-card">
+    <h3>Sol </h3>
+    <p>Date: {new Date(sol.First_UTC).toLocaleDateString()}</p>
+    <p>Average Temperature: {sol.AT.av}°C</p>
+    <p>Min Temperature: {sol.AT.mn}°C</p>
+    <p>Max Temperature: {sol.AT.mx}°C</p>
+  </div>
 );

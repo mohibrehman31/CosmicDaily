@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { MarsWeatherData } from "../../components/types";
+import { MarsWeatherData } from "../../types";
 import { fetchMarsWeatherData } from "./marsWeatherAPI";
 
 // Define the state type

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../app/store";
 import { fetchMarsWeather } from "../features/marsWeather/marsWeatherSlice";
 import { marsBackgroundImage } from "../assets";
-import { MarsWeatherData } from "./types";
+import { MarsWeatherData } from "../types";
 import { GlassCard } from "./GlassCard";
 import { useEffect } from "react";
 
@@ -63,12 +63,6 @@ export const MarsWeatherDashboard: React.FC = () => {
     </div>
   );
 };
-
-const LoadingMessage: React.FC = () => (
-  <div className="text-white text-center text-2xl">
-    Loading Mars weather data...
-  </div>
-);
 
 const ErrorMessage: React.FC<{ error: string | null }> = ({ error }) => (
   <div className="text-red-500 text-center text-2xl">Error: {error}</div>
