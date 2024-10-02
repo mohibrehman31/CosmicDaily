@@ -6,7 +6,7 @@
   "author": "Cosmo team",
   "license": "MIT",
   "engines": {
-    "node": "20.x"
+    "node": "18.x"
   },
   "scripts": {
     "start": "node dist/index.js",
