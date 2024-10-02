@@ -1,4 +1,4 @@
-name: Continuous Deployment
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -11,35 +11,23 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          node-version: "18"
 
-      - name: Build and push Frontend
-        uses: docker/build-push-action@v4
-        with:
-          context: ./Frontend
-          push: true
-          tags: yourdockerhubusername/frontend:latest
+      - name: Install Dependencies
+        run: |
+          cd Frontend
+          npm ci
 
-      - name: Build and push Backend
-        uses: docker/build-push-action@v4
-        with:
-          context: ./Backend
-          push: true
-          tags: yourdockerhubusername/backend:latest
+      - name: Build
+        run: |
+          cd Frontend
+          npm run build
 
-      - name: Deploy to production
-        uses: appleboy/ssh-action@master
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            docker-compose pull
-            docker-compose up -d
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./Frontend/dist

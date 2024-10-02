@@ -3,6 +3,7 @@ version: '3.8'
 services:
   backend:
     build: ./Backend
+    image: mohibrehman31/cosmicdailybackend:latest
     ports:
       - "5000:5000"
     environment:
@@ -13,6 +14,7 @@ services:
 
   frontend:
     build: ./Frontend
+    image: mohibrehman31/cosmicdailyfrontend:latest
     ports:
       - "3000:3000"
     environment:
