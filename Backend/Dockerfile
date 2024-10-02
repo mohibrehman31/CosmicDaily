@@ -2,6 +2,7 @@ FROM node:18-alpine AS base
 WORKDIR /usr/src/app
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+ENV SHELL="/bin/sh"
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 FROM base AS dependencies
@@ -18,7 +19,8 @@ CMD ["pnpm", "run", "dev"]
 FROM base AS production
 COPY --from=dependencies /usr/src/app/node_modules ./node_modules
 COPY . .
-RUN pnpm setup && \
+RUN mkdir -p /pnpm && \
+    echo '{"global-bin-dir":"/pnpm"}' > /pnpm/.pnpmrc && \
     pnpm install -g pm2 && \
     pnpm store prune && \
     chown -R node:node .
