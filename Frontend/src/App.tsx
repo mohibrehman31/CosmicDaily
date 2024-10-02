@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ButtonGradient from "./assets/svg/ButtonGradient";
 import Benefits from "./components/Benefits";
 import Collaboration from "./components/Collaboration";
@@ -9,6 +10,7 @@ import { AsteroidDashboard } from "./components/AsteroidDashboard";
 import { MarsWeatherDashboard } from "./components/MarsWeather";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
+
 const App: React.FC = () => {
   return (
     <Provider store={store}>
