@@ -4,7 +4,7 @@ RUN npm install -g pnpm
 
 FROM base AS dependencies
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 FROM base AS development
 COPY --from=dependencies /usr/src/app/node_modules ./node_modules
