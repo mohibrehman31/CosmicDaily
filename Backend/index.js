@@ -1,12 +1,34 @@
-const mongoose = require('mongoose');
-const express = require('express');
-const app = express();
+const app = require('./src/app');
+const config = require('./src/config/config');
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+const server = app.listen(config.port, () => {
+  console.log(`Listening to port ${config.port}`);
 });
 
-// Add your other routes and middleware here
+const exitHandler = () => {
+  if (server) {
+    server.close(() => {
+      console.log('Server closed');
+      process.exit(1);
+    });
+  } else {
+    process.exit(1);
+  }
+};
 
-// Important: For Vercel deployment, we export the app instead of calling app.listen()
+const unexpectedErrorHandler = (error) => {
+  console.error(error);
+  exitHandler();
+};
+
+process.on('uncaughtException', unexpectedErrorHandler);
+process.on('unhandledRejection', unexpectedErrorHandler);
+
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received');
+  if (server) {
+    server.close();
+  }
+});
+
 module.exports = app;
