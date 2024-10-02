@@ -21,7 +21,6 @@ const App: React.FC = () => {
         <Collaboration />
         <Footer />
       </div>
-
       <ButtonGradient />
     </Provider>
   );
