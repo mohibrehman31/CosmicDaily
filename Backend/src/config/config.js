@@ -8,7 +8,7 @@ const envVarsSchema = Joi.object()
   .keys({
     NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
     PORT: Joi.number().default(3000),
-    NASA_API_KEY: Joi.string().required(),
+    NASA_API_KEY: Joi.string(),
   })
   .unknown();
 
