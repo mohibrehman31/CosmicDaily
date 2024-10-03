@@ -14,7 +14,7 @@
     "prettier": "prettier --check **/*.js",
     "prettier:fix": "prettier --write **/*.js",
     "test": "echo \"No tests specified\" && exit 0",
-    "postinstall": "tsc"
+    "postinstall": "echo \"Skipping TypeScript compilation\""
   },
   "keywords": [
     "node",
