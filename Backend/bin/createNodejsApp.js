@@ -69,11 +69,8 @@ async function setup() {
     // Install dependencies
     const useYarn = await hasYarn();
     console.log('Installing dependencies...');
-    if (useYarn) {
-      await runCmd('yarn install');
-    } else {
-      await runCmd('npm install');
-    }
+    
+    await runCmd('npm install');
     console.log('Dependencies installed successfully.');
     console.log();
 
