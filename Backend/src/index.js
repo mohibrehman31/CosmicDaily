@@ -4,6 +4,10 @@ const config = require('./config/config');
 const logger = require('./config/logger');
 
 const port = process.env.PORT || 3000;
+// Create a simple route
+app.get('/', (req, res) => {
+  res.send('Welcome to the Cosmo Backend API');
+});
 
 // For local development
 if (require.main === module) {
