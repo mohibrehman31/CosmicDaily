@@ -36,6 +36,7 @@ import {
   yourlogo,
 } from "../assets";
 
+export const Backend_URL = "https://cosmic-daily.vercel.app/v1";
 export const navigation = [
   {
     id: "0",

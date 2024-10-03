@@ -1,3 +1,5 @@
+import { Backend_URL } from "../constants";
+
 interface ApodData {
   picture: {
     url: string;
@@ -10,12 +12,12 @@ interface ApodData {
 
 export const fetchApodData = async (): Promise<ApodData> => {
   try {
-    const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}`);
+    const response = await fetch(`${Backend_URL}/apod`);
     if (!response.ok) {
-      throw new Error('Failed to fetch APOD data');
+      throw new Error("Failed to fetch APOD data");
     }
     const data = await response.json();
-    
+
     return {
       picture: {
         url: data.url,
@@ -26,7 +28,7 @@ export const fetchApodData = async (): Promise<ApodData> => {
       },
     };
   } catch (error) {
-    console.error('Error fetching APOD data:', error);
+    console.error("Error fetching APOD data:", error);
     throw error;
   }
 };
