@@ -3,19 +3,34 @@ const app = require('./app');
 const config = require('./config/config');
 const logger = require('./config/logger');
 
-const port = process.env.PORT || 3000;
+let server;
 
-// Create a simple route
-app.get('/', (req, res) => {
-  res.send('Welcome to the Cosmo Backend API');
+server = app.listen(config.port, () => {
+  logger.info(`Listening to port ${config.port}`);
 });
 
-// For local development
-if (require.main === module) {
-  app.listen(port, () => {
-    console.log(`Listening to port ${port}`);
-  });
-}
+const exitHandler = () => {
+  if (server) {
+    server.close(() => {
+      logger.info('Server closed');
+      process.exit(1);
+    });
+  } else {
+    process.exit(1);
+  }
+};
 
-// Export the Express app for Vercel
-module.exports = app;
+const unexpectedErrorHandler = (error) => {
+  logger.error(error);
+  exitHandler();
+};
+
+process.on('uncaughtException', unexpectedErrorHandler);
+process.on('unhandledRejection', unexpectedErrorHandler);
+
+process.on('SIGTERM', () => {
+  logger.info('SIGTERM received');
+  if (server) {
+    server.close();
+  }
+});
