@@ -24,7 +24,6 @@ const AsteroidVisualization: React.FC = () => {
 
     const textureLoader = new THREE.TextureLoader();
 
-    // Load the asteroid texture with error handling
     textureLoader.load(
       `/asteroid-texture.jpg`,
       (texture) => {
