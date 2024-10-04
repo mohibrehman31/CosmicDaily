@@ -3,7 +3,7 @@ import { collabApps, collabContent, collabText } from "../constants";
 import Button from "./Button";
 import Section from "./Section";
 import { LeftCurve, RightCurve } from "./design/Collaboration";
-
+import logo from "../assets/logo.png";
 const Collaboration = () => {
   return (
     <Section crosses>
@@ -39,12 +39,7 @@ const Collaboration = () => {
             <div className="flex w-60 aspect-square m-auto border border-n-6 rounded-full">
               <div className="w-[6rem] aspect-square m-auto p-[0.2rem] bg-conic-gradient rounded-full">
                 <div className="flex items-center justify-center w-full h-full bg-n-8 rounded-full">
-                  <img
-                    src={brainwaveSymbol}
-                    width={48}
-                    height={48}
-                    alt="brainwave"
-                  />
+                  <img src={logo} width={48} height={48} alt="CosmicDaily" />
                 </div>
               </div>
             </div>

@@ -13,10 +13,11 @@ const RasaChat: React.FC = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isChatboxOpen, setIsChatboxOpen] = useState(false);
   const [isInitialGreeting, setIsInitialGreeting] = useState(true);
+  const [hasOldMessages, setHasOldMessages] = useState(false);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    loadChatHistory();
+    checkForOldMessages();
   }, []);
 
   useEffect(() => {
@@ -44,6 +45,14 @@ const RasaChat: React.FC = () => {
       setMessages(parsedMessages);
       setIsChatboxOpen(true);
       setIsInitialGreeting(false);
+      setHasOldMessages(false); // Hide the button after loading old messages
+    }
+  };
+
+  const checkForOldMessages = () => {
+    const savedMessages = localStorage.getItem("chatHistory");
+    if (savedMessages) {
+      setHasOldMessages(true);
     }
   };
 
@@ -68,6 +77,7 @@ const RasaChat: React.FC = () => {
     if (messageToSend.trim() === "") return;
 
     updateChatState(messageToSend);
+    setHasOldMessages(false);
 
     try {
       const data = await sendMessageToRasa(messageToSend);
@@ -105,6 +115,11 @@ const RasaChat: React.FC = () => {
 
   return (
     <div className="flex flex-col max-w-[40rem] mx-auto p-4 h-full">
+      {hasOldMessages && messages.length === 0 && (
+        <Button onClick={loadChatHistory} className="mb-4">
+          Retrieve Old Messages
+        </Button>
+      )}
       {(isChatboxOpen || messages.length > 0) && (
         <ChatMessages
           messages={messages}

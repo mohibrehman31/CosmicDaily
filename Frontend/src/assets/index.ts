@@ -43,7 +43,7 @@ import service2 from "./services/service-2.png";
 import service3 from "./services/service-3.png";
 import lines from "./pricing/lines.svg";
 import stars from "./pricing/stars.svg";
-
+import logo from "./logo.png";
 import coins from "./roadmap/coins.png";
 import done from "./roadmap/done.svg";
 import hero from "./roadmap/hero.png";
@@ -96,6 +96,7 @@ export {
   recording01,
   disc02,
   chromecast,
+  logo,
   sliders04,
   loading,
   background,
