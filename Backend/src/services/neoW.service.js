@@ -5,17 +5,13 @@ const config = require('../config/config');
 
 /**
  * Get asteroids data for a given date range
- * @param {string} startDate - Start date in 'YYYY-MM-DD' format
- * @param {string} endDate - End date in 'YYYY-MM-DD' format
  * @returns {Promise<Object>}
  */
 const getAsteroids = async () => {
   try {
-    const response = await axios.get('https://api.nasa.gov/neo/rest/v1/feed', {
-      params: {
-        api_key: config.nasa.apiKey,
-      },
-    });
+    const response = await axios.get(
+      'https://api.nasa.gov/neo/rest/v1/feed?api_key=bEDbpmtVfTu3G999c4covubhMSarmGTJKF34G978'
+    );
 
     if (response.status !== httpStatus.OK) {
       throw new ApiError(response.status, 'Failed to fetch asteroid data');
