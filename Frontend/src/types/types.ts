@@ -14,6 +14,7 @@ export interface SolData {
 export interface Temperature {
   max: number;
   min: number;
+  avg: number;
 }
 export interface AsteroidData {
   id: string;
@@ -52,6 +53,22 @@ export interface SolData {
   sol: number;
   lastUTC: string;
   temperature: Temperature;
+  windSpeed: {
+    avg: number;
+    mn: number;
+    mx: number;
+  };
+  pressure: {
+    avg: number;
+    mn: number;
+    mx: number;
+  };
+  windDirection: {
+    most_common: {
+      compass_point: string;
+      compass_degrees: number;
+    };
+  };
 }
 
 // Interface for the sols object

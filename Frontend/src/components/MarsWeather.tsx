@@ -87,45 +87,75 @@ const Header: React.FC = () => (
 );
 
 const LatestWeather: React.FC<{ data: MarsWeatherData }> = ({ data }) => {
-  const latestSol = data.sol_keys[0];
+  const latestSol = data.sol_keys[data.sol_keys.length - 1];
   const latestData = data.sols[latestSol];
 
   return (
-    <GlassCard className="mb-8">
-      <h2 className="text-3xl font-bold text-white">Sol {latestData.sol}</h2>
-      <p className="text-xl text-white">
-        {new Date(latestData.lastUTC).toLocaleDateString()}
-      </p>
-      <div className="grid grid-cols-2 gap-4 mt-4">
+    <GlassCard className="mb-4">
+      <div className="flex justify-between items-center mb-2">
+        <h2 className="text-2xl font-bold text-white">Sol {latestData.sol}</h2>
+        <p className="text-lg text-white">
+          {new Date(latestData.lastUTC).toLocaleDateString()}
+        </p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <WeatherSection title="Temperature" className="mb-2">
+          <WeatherItem
+            label="High"
+            value={`${latestData.temperature.max.toFixed(1)}° C`}
+          />
+          <WeatherItem
+            label="Low"
+            value={`${latestData.temperature.min.toFixed(1)}° C`}
+          />
+          <WeatherItem
+            label="Avg"
+            value={`${latestData.temperature?.avg.toFixed(1)}° C`}
+          />
+        </WeatherSection>
         <div>
-          <p className="text-2xl text-white">Temperature</p>
-          <p className="text-xl text-white">
-            High: {latestData.temperature.max.toFixed(1)}° C
-          </p>
-          <p className="text-xl text-white">
-            Low: {latestData.temperature.min.toFixed(1)}° C
-          </p>
-          <p className="text-xl text-white">
-            Avg: {latestData.temperature?.avg.toFixed(1)}° C
-          </p>
-        </div>
-        <div>
-          <p className="text-2xl text-white">Pressure</p>
-          <p className="text-xl text-white">
-            {latestData.pressure?.avg.toFixed(1)} Pa
-          </p>
-          <p className="text-2xl mt-4 text-white">Wind</p>
-          <p className="text-xl text-white">
-            Speed: {latestData.windSpeed?.avg.toFixed(1)} m/s
-          </p>
-          <p className="text-xl text-white">
-            Direction: {latestData?.windDirection?.most_common?.compass_point}
-          </p>
+          <WeatherSection title="Pressure" className="mb-2">
+            <WeatherItem
+              label="Avg"
+              value={`${latestData.pressure?.avg.toFixed(1)} Pa`}
+            />
+          </WeatherSection>
+          <WeatherSection title="Wind">
+            <WeatherItem
+              label="Speed"
+              value={`${latestData.windSpeed?.avg.toFixed(1)} m/s`}
+            />
+            <WeatherItem
+              label="Direction"
+              value={latestData?.windDirection?.most_common?.compass_point}
+            />
+          </WeatherSection>
         </div>
       </div>
     </GlassCard>
   );
 };
+
+const WeatherSection: React.FC<{
+  title: string;
+  className?: string;
+  children: React.ReactNode;
+}> = ({ title, className = "", children }) => (
+  <div className={className}>
+    <h3 className="text-xl font-semibold text-white mb-1">{title}</h3>
+    {children}
+  </div>
+);
+
+const WeatherItem: React.FC<{ label: string; value: string }> = ({
+  label,
+  value,
+}) => (
+  <div className="flex justify-between items-center">
+    <p className="text-lg text-white">{label}:</p>
+    <p className="text-lg text-white font-medium">{value}</p>
+  </div>
+);
 
 const WeatherHistory: React.FC<{ data: MarsWeatherData }> = ({ data }) => (
   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4">
