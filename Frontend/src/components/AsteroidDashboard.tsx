@@ -3,8 +3,8 @@ import AsteroidVisualization from "./Asteroid";
 import { ResponsiveContainer } from "recharts";
 import { AlertTriangle, Info } from "lucide-react";
 import Chart from "./Chart";
-import { fetchAsteroidData } from "../api/asteroidApi";
-import { DashboardData } from "../types/asteroidTypes";
+import { fetchAsteroidData } from "../features/asteroid/asteroidAPI";
+import { DashboardData } from "../types/types";
 import { SummaryCard } from "./SummaryCard";
 
 export const AsteroidDashboard: React.FC = () => {

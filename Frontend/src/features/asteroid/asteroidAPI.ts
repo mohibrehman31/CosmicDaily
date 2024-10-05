@@ -1,10 +1,12 @@
 import axios from "axios";
-import { AsteroidData } from "../../types/types";
+import { DashboardData } from "../../types/types";
 const BASE_URL = "https://cosmic-daily.vercel.app/v1";
 
-export const fetchAsteroidData = async (): Promise<AsteroidData[]> => {
+export const fetchAsteroidData = async (): Promise<DashboardData> => {
   try {
-    const response = await axios.get<AsteroidData[]>(`${BASE_URL}/asteroids`);
+    const response = await axios.get<DashboardData>(
+      `${BASE_URL}/neoW/threat-dashboard`
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching asteroid data:", error);

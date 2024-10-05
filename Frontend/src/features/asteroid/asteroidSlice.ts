@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { fetchAsteroidData } from "./asteroidAPI";
-import { AsteroidData } from "../../types/types";
+import { DashboardData } from "../../types/types";
 interface AsteroidState {
-  data: AsteroidData[] | null;
+  data: DashboardData | null;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
@@ -14,7 +14,7 @@ const initialAsteroidState: AsteroidState = {
 };
 
 export const fetchAsteroids = createAsyncThunk<
-  AsteroidData[],
+  DashboardData,
   void,
   { rejectValue: string }
 >("asteroid/fetchAsteroids", async (_, { rejectWithValue }) => {
@@ -39,7 +39,7 @@ const asteroidSlice = createSlice({
       })
       .addCase(
         fetchAsteroids.fulfilled,
-        (state, action: PayloadAction<AsteroidData[]>) => {
+        (state, action: PayloadAction<DashboardData>) => {
           state.status = "succeeded";
           state.data = action.payload;
           state.error = null;

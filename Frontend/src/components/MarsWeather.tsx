@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../app/store";
 import { fetchMarsWeather } from "../features/marsWeather/marsWeatherSlice";
 import { marsBackgroundImage } from "../assets";
-import { MarsWeatherData } from "../types";
+import { MarsWeatherData } from "../types/types";
 import { GlassCard } from "./GlassCard";
 import { useEffect } from "react";
 
