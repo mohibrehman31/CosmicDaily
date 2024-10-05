@@ -41,16 +41,7 @@ const generateDashboard = (asteroids) => {
  */
 const getThreatLevelDashboard = async (req, res) => {
   try {
-    const { startDate, endDate } = req.query;
-
-    if (!startDate || !endDate) {
-      return res.status(httpStatus.BAD_REQUEST).json({
-        code: httpStatus.BAD_REQUEST,
-        message: 'Start date and end date are required',
-      });
-    }
-
-    const asteroids = await neoWService.getAsteroids(startDate, endDate);
+    const asteroids = await neoWService.getAsteroids();
 
     const dashboard = generateDashboard(asteroids);
 

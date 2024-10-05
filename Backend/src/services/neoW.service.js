@@ -9,12 +9,10 @@ const config = require('../config/config');
  * @param {string} endDate - End date in 'YYYY-MM-DD' format
  * @returns {Promise<Object>}
  */
-const getAsteroids = async (startDate, endDate) => {
+const getAsteroids = async () => {
   try {
     const response = await axios.get('https://api.nasa.gov/neo/rest/v1/feed', {
       params: {
-        start_date: startDate,
-        end_date: endDate,
         api_key: config.nasa.apiKey,
       },
     });
@@ -70,7 +68,7 @@ const calculateThreatScore = (asteroid) => {
   const missDistance = parseFloat(asteroid.close_approach_data[0].miss_distance.kilometers);
 
   const score = (diameter * velocity) / (missDistance / 1000000);
-  return Math.min(Math.max(score, 0), 100); // Clamp the score between 0 and 100
+  return Math.min(Math.max(score, 0), 100);
 };
 
 /**

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { AsteroidData, fetchAsteroidData } from "./asteroidAPI";
-
+import { fetchAsteroidData } from "./asteroidAPI";
+import { AsteroidData } from "../../types/types";
 interface AsteroidState {
   data: AsteroidData[] | null;
   status: "idle" | "loading" | "succeeded" | "failed";

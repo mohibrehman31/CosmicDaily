@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { ApodData, fetchApodData } from "./apodAPI";
+import { fetchApodData } from "./apodAPI";
+import { ApodData } from "../../types/types";
 
 interface ApodState {
   data: ApodData | null;

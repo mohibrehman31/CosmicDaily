@@ -1,15 +1,5 @@
 import axios from "axios";
-
-export interface ApodData {
-  url: string;
-  hdurl?: string;
-  title: string;
-  explanation: string;
-  date: string;
-  copyright?: string;
-  mediaType: "image" | "video";
-  serviceVersion?: string;
-}
+import { ApodData } from "../../types/types";
 
 const BASE_URL = "https://cosmic-daily.vercel.app/v1";
 

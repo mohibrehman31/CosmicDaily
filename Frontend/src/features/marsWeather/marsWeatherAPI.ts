@@ -1,5 +1,5 @@
 import axios from "axios";
-import { MarsWeatherData } from "../../types";
+import { MarsWeatherData } from "../../types/types";
 
 const BASE_URL = "https://cosmic-daily.vercel.app/v1";
 
