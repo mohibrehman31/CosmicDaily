@@ -20,12 +20,12 @@ import disc02 from "./disc-02.svg";
 import chromecast from "./chrome-cast.svg";
 import sliders04 from "./sliders-04.svg";
 import loading from "./loading.png";
-import background from "./background.jpg";
+import background from "./background.jpeg";
 import marsBackgroundImage from "./mars-image.jpeg";
 
 import curve from "./hero/curve.png";
 import robot from "./hero/robot.jpg";
-import heroBackground from "./hero/hero-background.jpg";
+import heroBackground from "./hero/hero-background.jpeg";
 
 import curve1 from "./collaboration/curve-1.svg";
 import curve2 from "./collaboration/curve-2.svg";

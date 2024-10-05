@@ -1,18 +1,11 @@
 import axios from "axios";
 import { MarsWeatherData } from "../../types";
 
-const API_KEY = "bEDbpmtVfTu3G999c4covubhMSarmGTJKF34G978";
-const BASE_URL = "http://localhost:3001/v1/insights/";
+const BASE_URL = "https://cosmic-daily.vercel.app/v1";
 
 export const fetchMarsWeatherData = async (): Promise<MarsWeatherData> => {
   try {
-    const response = await axios.get<MarsWeatherData>(BASE_URL, {
-      params: {
-        api_key: API_KEY,
-        feedtype: "json",
-        ver: "1.0",
-      },
-    });
+    const response = await axios.get<MarsWeatherData>(`${BASE_URL}/insights/`);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -23,18 +16,9 @@ export const fetchMarsWeatherData = async (): Promise<MarsWeatherData> => {
   }
 };
 
-export const fetchSpecificSolData = async (
-  sol: string
-): Promise<MarsWeatherData> => {
+export const fetchSpecificSolData = async (): Promise<MarsWeatherData> => {
   try {
-    const response = await axios.get<MarsWeatherData>(BASE_URL, {
-      params: {
-        api_key: API_KEY,
-        feedtype: "json",
-        ver: "1.0",
-        sol: sol,
-      },
-    });
+    const response = await axios.get<MarsWeatherData>(BASE_URL);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
