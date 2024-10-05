@@ -9,7 +9,11 @@ const config = require('../config/config');
  */
 const getApod = async () => {
   try {
-    const response = await axios.get('https://api.nasa.gov/planetary/apod?api_key=bEDbpmtVfTu3G999c4covubhMSarmGTJKF34G978');
+    const response = await axios.get('https://api.nasa.gov/planetary/apod', {
+      params: {
+        api_key: config.nasa.apiKey,
+      },
+    });
     if (response.status !== httpStatus.OK) {
       throw new ApiError(response.status, 'Failed to fetch APOD data');
     }
