@@ -9,8 +9,7 @@ const config = require('../config/config');
  */
 const getInsight = async () => {
   try {
-    console.log(config.nasa.apiKey);
-    const response = await axios.get('https://api.nasa.gov/insight_weather', {
+    const response = await axios.get('https://api.nasa.gov/insight_weather/', {
       params: {
         api_key: config.nasa.apiKey,
         feedtype: 'json',
