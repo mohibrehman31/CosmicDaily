@@ -1,5 +1,4 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ButtonGradient from "./assets/svg/ButtonGradient";
 import Benefits from "./components/Benefits";
 import Collaboration from "./components/Collaboration";

@@ -11,11 +11,11 @@ export interface ApodData {
   serviceVersion?: string;
 }
 
-const API_BASE_URL = "http://localhost:3000/v1";
+const BASE_URL = "https://cosmic-daily.vercel.app/v1";
 
 export const fetchApodData = async (): Promise<ApodData> => {
   try {
-    const response = await axios.get<ApodData>(`${API_BASE_URL}/apod`);
+    const response = await axios.get<ApodData>(`${BASE_URL}/apod`);
     return response.data;
   } catch (error) {
     console.error("Error fetching APOD data:", error);
