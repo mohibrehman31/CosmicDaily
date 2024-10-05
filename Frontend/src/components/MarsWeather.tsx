@@ -1,17 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../app/store";
 import { fetchMarsWeather } from "../features/marsWeather/marsWeatherSlice";
 import { marsBackgroundImage } from "../assets";
 import { MarsWeatherData } from "../types/types";
 import { GlassCard } from "./GlassCard";
-import { useEffect } from "react";
 
 export const MarsWeatherDashboard: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { data, status, error } = useSelector(
     (state: RootState) => state.marsWeather
   ) as { data: MarsWeatherData | null; status: string; error: string | null };
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchMarsWeather());
+    }
+  }, [status, dispatch]);
+
   const renderSkeleton = () => (
     <div className="min-h-screen bg-[#0E0C15] text-gray-200 relative">
       <div className="max-w-6xl mx-auto p-4">
@@ -35,11 +41,6 @@ export const MarsWeatherDashboard: React.FC = () => {
       </div>
     </div>
   );
-  useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchMarsWeather());
-    }
-  }, [status, dispatch]);
 
   if (status === "loading") {
     return renderSkeleton();
@@ -54,7 +55,13 @@ export const MarsWeatherDashboard: React.FC = () => {
   }
 
   return (
-    <div className={backgroundStyles}>
+    <div
+      className="relative min-h-screen bg-cover bg-center bg-no-repeat p-8 bg-blend-overlay "
+      style={{
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${marsBackgroundImage})`,
+        opacity: 0.5,
+      }}
+    >
       <div className="max-w-6xl mx-auto">
         <Header />
         <LatestWeather data={data} />
@@ -89,10 +96,33 @@ const LatestWeather: React.FC<{ data: MarsWeatherData }> = ({ data }) => {
       <p className="text-xl text-white">
         {new Date(latestData.lastUTC).toLocaleDateString()}
       </p>
-      <p className="text-2xl mt-2 text-white">
-        High: {latestData.temperature.max.toFixed(1)}° C | Low:{" "}
-        {latestData.temperature.min.toFixed(1)}° C
-      </p>
+      <div className="grid grid-cols-2 gap-4 mt-4">
+        <div>
+          <p className="text-2xl text-white">Temperature</p>
+          <p className="text-xl text-white">
+            High: {latestData.temperature.max.toFixed(1)}° C
+          </p>
+          <p className="text-xl text-white">
+            Low: {latestData.temperature.min.toFixed(1)}° C
+          </p>
+          <p className="text-xl text-white">
+            Avg: {latestData.temperature?.avg.toFixed(1)}° C
+          </p>
+        </div>
+        <div>
+          <p className="text-2xl text-white">Pressure</p>
+          <p className="text-xl text-white">
+            {latestData.pressure?.avg.toFixed(1)} Pa
+          </p>
+          <p className="text-2xl mt-4 text-white">Wind</p>
+          <p className="text-xl text-white">
+            Speed: {latestData.windSpeed?.avg.toFixed(1)} m/s
+          </p>
+          <p className="text-xl text-white">
+            Direction: {latestData?.windDirection?.most_common?.compass_point}
+          </p>
+        </div>
+      </div>
     </GlassCard>
   );
 };
@@ -118,9 +148,4 @@ const WeatherCard: React.FC<{ solData: any }> = ({ solData }) => (
   </GlassCard>
 );
 
-const backgroundStyles = `
-  relative min-h-screen bg-cover bg-center bg-no-repeat p-8
-  bg-[url(${marsBackgroundImage})]
-  bg-[rgba(0,0,0,0.5)]
-  bg-blend-overlay
-`;
+export default MarsWeatherDashboard;
