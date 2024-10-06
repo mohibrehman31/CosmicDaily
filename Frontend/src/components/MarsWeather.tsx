@@ -5,6 +5,7 @@ import { fetchMarsWeather } from "../features/marsWeather/marsWeatherSlice";
 import { marsBackgroundImage } from "../assets";
 import { MarsWeatherData } from "../types/types";
 import { GlassCard } from "./GlassCard";
+import Section from "./Section";
 
 export const MarsWeatherDashboard: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -55,19 +56,27 @@ export const MarsWeatherDashboard: React.FC = () => {
   }
 
   return (
-    <div
-      className="relative min-h-screen bg-cover bg-center bg-no-repeat p-8 bg-blend-overlay "
-      style={{
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${marsBackgroundImage})`,
-        opacity: 0.5,
-      }}
+    <Section
+      className="pt-[2rem] -mt-[8.25rem]"
+      crosses
+      crossesOffset="lg:translate-y-[5.25rem]"
+      customPaddings="lg:pt-[8rem] lg:-mt-[8.25rem]"
+      id="mars-weather"
     >
-      <div className="max-w-6xl mx-auto">
-        <Header />
-        <LatestWeather data={data} />
-        <WeatherHistory data={data} />
+      <div
+        className="container min-h-screen max-w-max bg-cover bg-center bg-no-repeat p-8 bg-blend-overlay "
+        style={{
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${marsBackgroundImage})`,
+          opacity: 0.5,
+        }}
+      >
+        <div className="max-w-6xl mx-auto">
+          <Header />
+          <LatestWeather data={data} />
+          <WeatherHistory data={data} />
+        </div>
       </div>
-    </div>
+    </Section>
   );
 };
 
