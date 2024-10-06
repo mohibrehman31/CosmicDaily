@@ -6,11 +6,12 @@ export interface SolData {
     mx: number;
   };
   WD: {
-    // Add properties for wind direction if needed
+    most_common: {
+      compass_point: string;
+      compass_degrees: number;
+    };
   };
-  // Add other properties as needed
 }
-// Interface for the temperature data
 export interface Temperature {
   max: number;
   min: number;
@@ -48,7 +49,6 @@ export interface ApodData {
   mediaType: "image" | "video";
   serviceVersion?: string;
 }
-// Interface for individual sol data
 export interface SolData {
   sol: number;
   lastUTC: string;
@@ -70,13 +70,9 @@ export interface SolData {
     };
   };
 }
-
-// Interface for the sols object
 export interface Sols {
   [key: string]: SolData;
 }
-
-// Main interface for the Mars weather data
 export interface MarsWeatherData {
   sol_keys: string[];
   sols: Sols;

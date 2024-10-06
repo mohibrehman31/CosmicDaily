@@ -9,10 +9,10 @@ import {
 } from "recharts";
 import { Search, ChevronUp, ChevronDown } from "lucide-react";
 import Modal from "./ChartModal";
-import { Asteroid, DummyData } from "../types/asteroidTypes";
+import { Asteroid, DashboardData } from "../types/types";
 
 interface ChartProps {
-  dummyData: DummyData;
+  dummyData: DashboardData;
 }
 
 const Chart: React.FC<ChartProps> = ({ dummyData }) => {

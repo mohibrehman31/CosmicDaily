@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import HeroImage from "../HeroImage";
-import { ApodData } from "../../features/apod/apodAPI";
+import { ApodData } from "../../types/types";
 
 const mockApodData = {
   url: "/images/hero.jpg",
