@@ -77,7 +77,7 @@ const Chart: React.FC<ChartProps> = ({ dummyData }) => {
   );
 
   return (
-    <>
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <ChartView chartData={chartData} onBarClick={handleBarClick} />
       <AsteroidModal
         isOpen={isModalOpen}
@@ -89,7 +89,7 @@ const Chart: React.FC<ChartProps> = ({ dummyData }) => {
         onSort={handleSort}
         filteredAsteroids={filteredAsteroids}
       />
-    </>
+    </div>
   );
 };
 
@@ -99,7 +99,7 @@ interface ChartViewProps {
 }
 
 const ChartView: React.FC<ChartViewProps> = ({ chartData, onBarClick }) => (
-  <div style={{ width: "100%", height: 300 }}>
+  <div className="w-full h-64 sm:h-80 md:h-96 lg:h-[400px] mt-8">
     <ResponsiveContainer>
       <BarChart data={chartData}>
         <XAxis dataKey="name" stroke="#A78BFA" />
@@ -144,15 +144,17 @@ const AsteroidModal: React.FC<AsteroidModalProps> = ({
   filteredAsteroids,
 }) => (
   <Modal isOpen={isOpen} onClose={onClose}>
-    <h2 className="text-2xl font-semibold mb-4 text-purple-300">
-      {selectedThreatLevel} Threat Level Asteroids
-    </h2>
-    <SearchInput value={searchTerm} onChange={onSearchChange} />
-    <AsteroidTable
-      asteroids={filteredAsteroids}
-      sortConfig={sortConfig}
-      onSort={onSort}
-    />
+    <div className="max-w-full overflow-hidden">
+      <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-purple-300">
+        {selectedThreatLevel} Threat Level Asteroids
+      </h2>
+      <SearchInput value={searchTerm} onChange={onSearchChange} />
+      <AsteroidTable
+        asteroids={filteredAsteroids}
+        sortConfig={sortConfig}
+        onSort={onSort}
+      />
+    </div>
   </Modal>
 );
 
@@ -168,7 +170,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, onChange }) => (
       placeholder="Search asteroids..."
       value={value}
       onChange={onChange}
-      className="pl-10 pr-4 py-2 w-full bg-gray-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
+      className="pl-10 pr-4 py-2 w-full bg-gray-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm sm:text-base"
     />
     <Search className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
   </div>
@@ -185,33 +187,50 @@ const AsteroidTable: React.FC<AsteroidTableProps> = ({
   sortConfig,
   onSort,
 }) => (
-  <div className="overflow-x-auto">
-    <table className="min-w-full bg-gray-800">
-      <thead className="bg-gray-900">
-        <tr>
-          {[
-            "name",
-            "date",
-            "diameter",
-            "velocity",
-            "missDistance",
-            "threatScore",
-          ].map((column) => (
+  <div className="overflow-x-auto -mx-4 sm:-mx-6 lg:-mx-8">
+    <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+      <table className="min-w-full divide-y divide-gray-700">
+        <thead>
+          <tr>
             <TableHeader
-              key={column}
-              column={column as keyof Asteroid}
+              column="name"
               sortConfig={sortConfig}
               onSort={onSort}
             />
+            <TableHeader
+              column="date"
+              sortConfig={sortConfig}
+              onSort={onSort}
+            />
+            <TableHeader
+              column="diameter"
+              sortConfig={sortConfig}
+              onSort={onSort}
+            />
+            <TableHeader
+              column="velocity"
+              sortConfig={sortConfig}
+              onSort={onSort}
+            />
+            <TableHeader
+              column="missDistance"
+              sortConfig={sortConfig}
+              onSort={onSort}
+            />
+            <TableHeader
+              column="threatScore"
+              sortConfig={sortConfig}
+              onSort={onSort}
+            />
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-700">
+          {asteroids.map((asteroid) => (
+            <AsteroidRow key={asteroid.id} asteroid={asteroid} />
           ))}
-        </tr>
-      </thead>
-      <tbody className="divide-y divide-gray-700">
-        {asteroids.map((asteroid) => (
-          <AsteroidRow key={asteroid.id} asteroid={asteroid} />
-        ))}
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 );
 
@@ -225,22 +244,38 @@ const TableHeader: React.FC<TableHeaderProps> = ({
   column,
   sortConfig,
   onSort,
-}) => (
-  <th
-    className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider cursor-pointer"
-    onClick={() => onSort(column)}
-  >
-    <div className="flex items-center">
-      {column.charAt(0).toUpperCase() + column.slice(1)}
-      {sortConfig.key === column &&
-        (sortConfig.direction === "asc" ? (
-          <ChevronUp className="ml-1 w-4 h-4" />
-        ) : (
-          <ChevronDown className="ml-1 w-4 h-4" />
-        ))}
-    </div>
-  </th>
-);
+}) => {
+  const isActive = sortConfig.key === column;
+
+  return (
+    <th className="px-2 sm:px-3 py-3.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider cursor-pointer">
+      <div
+        className="flex items-center justify-between"
+        onClick={() => onSort(column)}
+      >
+        <span className="truncate">
+          {column.charAt(0).toUpperCase() + column.slice(1)}
+        </span>
+        <div className="flex flex-col ml-1 flex-shrink-0">
+          <ChevronUp
+            className={`w-3 h-3 ${
+              isActive && sortConfig.direction === "asc"
+                ? "text-purple-500"
+                : "text-gray-600"
+            }`}
+          />
+          <ChevronDown
+            className={`w-3 h-3 ${
+              isActive && sortConfig.direction === "desc"
+                ? "text-purple-500"
+                : "text-gray-600"
+            }`}
+          />
+        </div>
+      </div>
+    </th>
+  );
+};
 
 interface AsteroidRowProps {
   asteroid: Asteroid;
@@ -248,22 +283,32 @@ interface AsteroidRowProps {
 
 const AsteroidRow: React.FC<AsteroidRowProps> = ({ asteroid }) => (
   <tr className="hover:bg-gray-750">
-    <td className="px-4 py-3 whitespace-nowrap">{asteroid.name}</td>
-    <td className="px-4 py-3 whitespace-nowrap">{asteroid.date}</td>
-    <td className="px-4 py-3 whitespace-nowrap">
-      {asteroid.diameter.toFixed(2)} m
+    <td className="px-2 sm:px-3 py-4 whitespace-nowrap text-sm">
+      <div className="truncate max-w-[100px] sm:max-w-[150px] md:max-w-[200px]">
+        {asteroid.name}
+      </div>
     </td>
-    <td className="px-4 py-3 whitespace-nowrap">
-      {parseFloat(asteroid.velocity).toFixed(2)} km/s
+    <td className="px-2 sm:px-3 py-4 whitespace-nowrap text-sm">
+      <div className="truncate">{asteroid.date}</div>
     </td>
-    <td className="px-4 py-3 whitespace-nowrap">
-      {parseFloat(asteroid.missDistance).toLocaleString(undefined, {
-        maximumFractionDigits: 0,
-      })}{" "}
-      km
+    <td className="px-2 sm:px-3 py-4 whitespace-nowrap text-sm">
+      <div className="truncate">{asteroid.diameter.toFixed(2)} m</div>
     </td>
-    <td className="px-4 py-3 whitespace-nowrap">
-      {asteroid.threatScore.toFixed(2)}
+    <td className="px-2 sm:px-3 py-4 whitespace-nowrap text-sm">
+      <div className="truncate">
+        {parseFloat(asteroid.velocity).toFixed(2)} km/s
+      </div>
+    </td>
+    <td className="px-2 sm:px-3 py-4 whitespace-nowrap text-sm">
+      <div className="truncate">
+        {parseFloat(asteroid.missDistance).toLocaleString(undefined, {
+          maximumFractionDigits: 0,
+        })}{" "}
+        km
+      </div>
+    </td>
+    <td className="px-2 sm:px-3 py-4 whitespace-nowrap text-sm">
+      <div className="truncate">{asteroid.threatScore.toFixed(2)}</div>
     </td>
   </tr>
 );

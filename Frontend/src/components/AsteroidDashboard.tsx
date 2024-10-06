@@ -22,13 +22,14 @@ export const AsteroidDashboard: React.FC = () => {
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false));
-  }, []);
+  }, [dispatch]);
+
   const renderSkeleton = () => (
-    <div className="min-h-screen bg-[#0E0C15] text-gray-200 relative">
-      <div className="flex flex-col md:flex-row">
-        <div className="w-full md:w-2/3 p-4 md:p-6 overflow-y-auto relative z-10">
+    <div className="min-h-screen bg-[#0E0C15] text-gray-200 relative p-4 sm:p-6 lg:p-8">
+      <div className="flex flex-col lg:flex-row">
+        <div className="w-full lg:w-2/3 overflow-y-auto relative z-10">
           {/* Summary Cards Skeleton */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
             {[...Array(4)].map((_, index) => (
               <div
                 key={index}
@@ -54,7 +55,7 @@ export const AsteroidDashboard: React.FC = () => {
           </div>
         </div>
         {/* Sidebar Skeleton */}
-        <div className="w-full md:w-1/3 bg-gray-900 p-4 md:p-6 flex items-center justify-center">
+        <div className="w-full lg:w-1/3 bg-gray-900 p-4 flex items-center justify-center mt-6 lg:mt-0">
           <div className="animate-pulse">
             <div className="w-32 h-32 bg-gray-700 rounded-full flex items-center justify-center">
               <div className="w-16 h-16 border-4 border-gray-600 border-t-gray-300 rounded-full animate-spin"></div>
@@ -66,30 +67,30 @@ export const AsteroidDashboard: React.FC = () => {
   );
 
   if (loading) return renderSkeleton();
-  if (error) return <div>Error: {error}</div>;
+  if (error) return <div className="p-4 text-red-500">Error: {error}</div>;
 
   return (
     <Section crosses>
-      <div className="flex flex-col items-center justify-center">
-        <h1 className="text-3xl md:text-2xl font-semibold mb-4 text-purple-300">
+      <div className="flex flex-col items-center justify-center mt-[-10rem] sm:p-6 lg:p-8">
+        <h1 className="text-2xl sm:text-3xl font-semibold mb-4 text-purple-300 text-center">
           Asteroid Threat Level Breakdown
         </h1>
       </div>
-      <div className=" container min-h-screen bg-[#0E0C15] text-gray-200 relative">
+      <div className="container min-h-screen bg-[#0E0C15] text-gray-200 relative">
         {/* Background Asteroid Visualization for mobile */}
-        <div className="absolute inset-0 opacity-20 md:hidden">
+        <div className="absolute inset-0 opacity-20 lg:hidden">
           <AsteroidVisualization />
         </div>
 
-        <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col lg:flex-row">
           {/* Main Dashboard Content */}
-          <div className="w-full md:w-2/3 p-4 md:p-6 overflow-y-auto relative z-10">
+          <div className="w-full lg:w-2/3 p-4 sm:p-6 overflow-y-auto relative z-10">
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <SummaryCard
                 title="Total Asteroids"
                 value={dummyData?.totalAsteroids ?? 0}
-                icon={<Info className="w-5 h-5 md:w-6 md:h-6 text-blue-400" />}
+                icon={<Info className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" />}
               />
               <SummaryCard
                 title="Closest Approach"
@@ -101,7 +102,7 @@ export const AsteroidDashboard: React.FC = () => {
                     : "N/A"
                 }
                 icon={
-                  <AlertTriangle className="w-5 h-5 md:w-6 md:h-6 text-yellow-400" />
+                  <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400" />
                 }
               />
               <SummaryCard
@@ -109,7 +110,7 @@ export const AsteroidDashboard: React.FC = () => {
                 value={dummyData?.highestThreatAsteroid?.threatScore ?? "N/A"}
                 subtext={dummyData?.highestThreatAsteroid?.name ?? "Unknown"}
                 icon={
-                  <AlertTriangle className="w-5 h-5 md:w-6 md:h-6 text-red-400" />
+                  <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 text-red-400" />
                 }
               />
               <SummaryCard
@@ -131,22 +132,43 @@ export const AsteroidDashboard: React.FC = () => {
                     : "N/A"
                 }
                 icon={
-                  <AlertTriangle className="w-5 h-5 md:w-6 md:h-6 text-orange-400" />
+                  <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 text-orange-400" />
                 }
               />
             </div>
             {/* Threat Level Breakdown Chart */}
-            <div className="bg-gray-800 p-4 md:p-6 rounded-lg shadow-lg mb-6 md:mb-8">
-              <div className="h-64 md:h-80">
+            <div className="bg-gray-800 p-4 sm:p-6 rounded-lg shadow-lg mb-6">
+              <div className="h-64 sm:h-80 lg:h-96">
                 <ResponsiveContainer width="100%" height="100%">
                   <Chart dummyData={dummyData as DashboardData} />
                 </ResponsiveContainer>
+              </div>
+
+              <div className="flex items-center justify-center mt-4">
+                <svg
+                  className="w-6 h-6 text-yellow-400 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+                <span className="text-sm font-small">
+                  Click on the bars in the chart to view detailed information
+                  about each threat level.
+                </span>
               </div>
             </div>
           </div>
 
           {/*  Rotating Asteroid  */}
-          <div className="hidden md:flex md:w-1/3 bg-[#0E0C15] items-center justify-center">
+          <div className="hidden lg:flex lg:w-1/3 bg-[#0E0C15] items-center justify-center">
             <AsteroidVisualization />
           </div>
         </div>

@@ -2,7 +2,6 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { fetchApod } from "../features/apod/apodSlice";
 import Section from "./Section";
-import { BottomLine } from "./design/Hero";
 import HeroContent from "./HeroContent";
 import HeroImage from "./HeroImage";
 
@@ -26,7 +25,6 @@ const Hero: React.FC = () => {
         <HeroContent />
         <HeroImage apodData={apodData} status={status} />
       </div>
-      <BottomLine />
     </Section>
   );
 };

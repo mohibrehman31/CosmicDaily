@@ -1,4 +1,4 @@
-import { notification1 } from "../assets";
+import { nasa } from "../assets";
 import { notificationImages } from "../constants";
 
 interface NotificationProps {
@@ -14,9 +14,9 @@ const Notification: React.FC<NotificationProps> = ({ className, title }) => {
       } flex items-center p-4 pr-6 bg-n-9/40 backdrop-blur border border-n-1/10 rounded-2xl gap-5`}
     >
       <img
-        src={notification1}
-        width={62}
-        height={62}
+        src={nasa}
+        width={80}
+        height={80}
         alt="image"
         className="rounded-xl"
       />

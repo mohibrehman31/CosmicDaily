@@ -60,14 +60,14 @@ export const MarsWeatherDashboard: React.FC = () => {
       className="pt-[2rem] -mt-[8.25rem]"
       crosses
       crossesOffset="lg:translate-y-[5.25rem]"
-      customPaddings="lg:pt-[8rem] lg:-mt-[8.25rem]"
+      customPaddings="lg:pt-[6rem] lg:-mt-[8.25rem]"
       id="mars-weather"
     >
       <div
-        className="container min-h-screen max-w-max bg-cover bg-center bg-no-repeat p-8 bg-blend-overlay "
+        className="container min-h-screen max-w-max bg-cover bg-center bg-no-repeat p-6 bg-blend-overlay "
         style={{
           backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${marsBackgroundImage})`,
-          opacity: 0.5,
+          opacity: 0.8,
         }}
       >
         <div className="max-w-6xl mx-auto">
