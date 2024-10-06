@@ -71,7 +71,7 @@ export const AsteroidDashboard: React.FC = () => {
 
   return (
     <Section crosses>
-      <div className="flex flex-col items-center justify-center mt-[-10rem] sm:p-6 lg:p-8">
+      <div className="flex flex-col items-center justify-center sm:p-6 lg:p-8">
         <h1 className="text-2xl sm:text-3xl font-semibold mb-4 text-purple-300 text-center">
           Asteroid Threat Level Breakdown
         </h1>

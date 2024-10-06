@@ -56,13 +56,7 @@ export const MarsWeatherDashboard: React.FC = () => {
   }
 
   return (
-    <Section
-      className="pt-[2rem] -mt-[8.25rem]"
-      crosses
-      crossesOffset="lg:translate-y-[5.25rem]"
-      customPaddings="lg:pt-[6rem] lg:-mt-[8.25rem]"
-      id="mars-weather"
-    >
+    <Section crosses id="mars-weather">
       <div
         className="container min-h-screen max-w-max bg-cover bg-center bg-no-repeat p-6 bg-blend-overlay "
         style={{
