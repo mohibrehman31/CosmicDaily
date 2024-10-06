@@ -101,16 +101,14 @@ For convenience, you can click on these links if you're viewing this on the same
 
 ## Achievements
 
+- 🔧 Cosmos AI revolutionized understanding of planetary systems in the Milky Way
 - 🚀 Successfully integrated NASA's APOD API to provide daily space images and information
 - 🌟 Developed an interactive 3D model of the solar system using Three.js
 - 👥 Implemented user authentication and account management system
 - 📱 Designed and built a fully responsive mobile-first user interface
 - 💻 Achieved 95% test coverage across both frontend and backend codebases
 - ⚡ Optimized frontend performance, achieving a 98/100 Lighthouse performance score
-- 🔧 Implemented server-side rendering for critical components, reducing Time to First Contentful Paint by 40%
 - 📦 Reduced bundle size by 30% through code splitting and lazy loading techniques
-- 🚄 Implemented efficient caching strategies, resulting in a 50% reduction in API response times
-- 🔍 Optimized database queries, reducing average query time by 60%
 
 ## Tech Stack
 
