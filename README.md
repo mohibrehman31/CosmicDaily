@@ -66,21 +66,18 @@
      JWT_SECRET=your_jwt_secret
      ```
 
-4. Build the frontend:
-
-   ```
-   # In the frontend directory
-   npm run build
-   ```
-
-5. Start the server:
+4. Start the development servers:
 
    ```
    # In the backend directory
    npm run dev
+
+   # In the frontend directory
+   npm run dev
    ```
 
-6. Open your browser and navigate to `http://localhost:3000`
+5. Open your browser and navigate to `http://localhost:3000` For Backend.
+   `http://localhost:5173/` For Frontend.
 
 ## Achievements
 
@@ -98,15 +95,16 @@
 ## Tech Stack
 
 ### Frontend
-- React with Server-Side Rendering
+
+- React
 - Redux Toolkit
 - TypeScript
 - Tailwind CSS
 - Three.js (for 3D solar system)
 - Axios (for API requests)
-- Vite (for building and development)
 
 ### Backend
+
 - Node.js
 - Express
 - MongoDB with Mongoose
@@ -114,11 +112,10 @@
 
 ## Architecture
 
-CosmicDaily follows a hybrid architecture:
-- The frontend is built with React and supports Server-Side Rendering
-- Vite is used for both client-side and server-side builds
+CosmicDaily follows a client-server architecture:
+
+- The frontend is a Single Page Application (SPA) built with React
 - The backend is a RESTful API built with Node.js and Express
-- Express serves the SSR-enabled React app
 - Data is stored in a MongoDB database
 - Authentication is handled using JWT
 
