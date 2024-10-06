@@ -3,17 +3,21 @@ import AsteroidVisualization from "./Asteroid";
 import { ResponsiveContainer } from "recharts";
 import { AlertTriangle, Info } from "lucide-react";
 import Chart from "./Chart";
-import { fetchAsteroidData } from "../features/asteroid/asteroidAPI";
 import { DashboardData } from "../types/types";
 import { SummaryCard } from "./SummaryCard";
+import { AppDispatch } from "../app/store";
+import { useDispatch } from "react-redux";
+import { fetchAsteroids } from "../features/asteroid/asteroidSlice";
 
 export const AsteroidDashboard: React.FC = () => {
   const [dummyData, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    fetchAsteroidData()
+    dispatch(fetchAsteroids())
+      .unwrap()
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false));
@@ -148,7 +152,7 @@ export const AsteroidDashboard: React.FC = () => {
 
         {/*  Rotating Asteroid  */}
         <div className="hidden md:flex md:w-1/3 bg-gray-900 items-center justify-center">
-          <AsteroidVisualization />
+          <AsteroidVisualization backgroundColor="#0E0C15" />
         </div>
       </div>
     </div>

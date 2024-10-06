@@ -1,7 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
-
-const AsteroidVisualization: React.FC = () => {
+interface AsteroidVisualizationProps {
+  backgroundColor?: string;
+}
+const AsteroidVisualization: React.FC<AsteroidVisualizationProps> = ({
+  backgroundColor,
+}) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -98,7 +102,11 @@ const AsteroidVisualization: React.FC = () => {
     return <div>Error: {error}</div>;
   }
 
-  return <div ref={mountRef} />;
+  return (
+    <div style={{ backgroundColor }}>
+      <div ref={mountRef} />
+    </div>
+  );
 };
 
 export default AsteroidVisualization;
