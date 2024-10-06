@@ -72,8 +72,8 @@ export const AsteroidDashboard: React.FC = () => {
   return (
     <Section crosses>
       <div className="flex flex-col items-center justify-center sm:p-6 lg:p-8">
-        <h1 className="text-2xl sm:text-3xl font-semibold mb-4 text-purple-300 text-center">
-          Asteroid Threat Level Breakdown
+        <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-purple-300 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-900">
+          Cosmic Collision Countdown: Your Asteroid Alert Hub
         </h1>
       </div>
       <div className="container min-h-screen bg-[#0E0C15] text-gray-200 relative">

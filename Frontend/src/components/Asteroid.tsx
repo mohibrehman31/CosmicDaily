@@ -5,6 +5,11 @@ import { createNoise2D } from "simplex-noise";
 const AsteroidVisualization: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
+  const asteroidRef = useRef<THREE.Mesh | null>(null);
+  const mouseDownRef = useRef(false);
+  const previousMousePositionRef = useRef({ x: 0, y: 0 });
+  const rotationSpeedRef = useRef({ x: 0.003, y: 0.003 });
+  const lastUpdateTimeRef = useRef(Date.now());
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -24,7 +29,6 @@ const AsteroidVisualization: React.FC = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     mountRef.current.appendChild(renderer.domElement);
 
-    // Create smooth irregular asteroid geometry
     const createSmoothIrregularAsteroid = () => {
       const baseGeometry = new THREE.SphereGeometry(0.5, 64, 64);
       const noise2D = createNoise2D();
@@ -35,13 +39,11 @@ const AsteroidVisualization: React.FC = () => {
         vector.fromBufferAttribute(positions, i);
         const distance = vector.length();
 
-        // Use multiple layers of noise for more natural irregularities
         let noiseValue = 0;
         noiseValue += noise2D(vector.x * 2, vector.y * 2) * 0.4;
         noiseValue += noise2D(vector.x * 4, vector.y * 4) * 0.2;
         noiseValue += noise2D(vector.x * 8, vector.y * 8) * 0.05;
 
-        // Apply smoother deformation
         vector.normalize().multiplyScalar(distance * (1 + noiseValue * 0.2));
         positions.setXYZ(i, vector.x, vector.y, vector.z);
       }
@@ -69,6 +71,7 @@ const AsteroidVisualization: React.FC = () => {
         });
 
         const asteroid = new THREE.Mesh(geometry, material);
+        asteroidRef.current = asteroid;
         scene.add(asteroid);
 
         const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
@@ -90,8 +93,29 @@ const AsteroidVisualization: React.FC = () => {
 
         const animate = () => {
           requestAnimationFrame(animate);
-          asteroid.rotation.x += 0.005;
-          asteroid.rotation.y += 0.005;
+
+          const currentTime = Date.now();
+          const deltaTime = (currentTime - lastUpdateTimeRef.current) / 1000;
+          lastUpdateTimeRef.current = currentTime;
+
+          if (!mouseDownRef.current && asteroidRef.current) {
+            asteroidRef.current.rotation.x +=
+              rotationSpeedRef.current.x * deltaTime * 60;
+            asteroidRef.current.rotation.y +=
+              rotationSpeedRef.current.y * deltaTime * 60;
+
+            rotationSpeedRef.current.x *= 0.995;
+            rotationSpeedRef.current.y *= 0.995;
+
+            const minSpeed = 0.003;
+            if (Math.abs(rotationSpeedRef.current.x) < minSpeed)
+              rotationSpeedRef.current.x =
+                minSpeed * Math.sign(rotationSpeedRef.current.x);
+            if (Math.abs(rotationSpeedRef.current.y) < minSpeed)
+              rotationSpeedRef.current.y =
+                minSpeed * Math.sign(rotationSpeedRef.current.y);
+          }
+
           renderer.render(scene, camera);
         };
         animate();
@@ -125,12 +149,53 @@ const AsteroidVisualization: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const handleMouseDown = (event: MouseEvent) => {
+      mouseDownRef.current = true;
+      previousMousePositionRef.current = { x: event.clientX, y: event.clientY };
+    };
+
+    const handleMouseUp = () => {
+      mouseDownRef.current = false;
+    };
+
+    const handleMouseMove = (event: MouseEvent) => {
+      if (mouseDownRef.current && asteroidRef.current) {
+        const deltaX = event.clientX - previousMousePositionRef.current.x;
+        const deltaY = event.clientY - previousMousePositionRef.current.y;
+
+        asteroidRef.current.rotation.y += deltaX * 0.02; // Increased sensitivity
+        asteroidRef.current.rotation.x += deltaY * 0.02; // Increased sensitivity
+
+        // Update rotation speed based on mouse movement (increased)
+        rotationSpeedRef.current.x = deltaY * 0.0004;
+        rotationSpeedRef.current.y = deltaX * 0.0004;
+
+        previousMousePositionRef.current = {
+          x: event.clientX,
+          y: event.clientY,
+        };
+      }
+    };
+
+    document.addEventListener("mousedown", handleMouseDown);
+    document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      document.removeEventListener("mousedown", handleMouseDown);
+      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
   if (error) {
     return <div>Error: {error}</div>;
   }
 
   return (
     <div
+      className="cursor-grab active:cursor-grabbing"
       ref={mountRef}
       style={{ width: "100%", height: "400px", backgroundColor: "transparent" }}
     />

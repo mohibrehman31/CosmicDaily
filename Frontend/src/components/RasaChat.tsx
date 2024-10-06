@@ -109,14 +109,18 @@ const RasaChat: React.FC = () => {
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      sendMessage(isInitialGreeting ? "Hi How are you?" : undefined);
+      sendMessage(
+        isInitialGreeting
+          ? "Hi which planets are closest to the sun?"
+          : undefined
+      );
     }
   };
 
   return (
-    <div className="flex flex-col max-w-[40rem] mx-auto p-4 h-full">
+    <div className="flex flex-col w-full max-w-[40rem] mx-auto p-2 sm:p-4 h-full">
       {hasOldMessages && messages.length === 0 && (
-        <Button onClick={loadChatHistory} className="mb-4">
+        <Button onClick={loadChatHistory} className="mb-4 w-full sm:w-auto">
           Retrieve Old Messages
         </Button>
       )}
@@ -144,7 +148,7 @@ const ChatMessages: React.FC<{
 }> = ({ messages, messagesContainerRef }) => (
   <div
     ref={messagesContainerRef}
-    className="flex-grow overflow-auto mb-4 space-y-2 max-h-[calc(100vh-400px)]"
+    className="flex-grow overflow-auto mb-4 space-y-2 max-h-[calc(100vh-200px)] sm:max-h-[calc(100vh-250px)] md:max-h-[calc(100vh-300px)] lg:max-h-[calc(100vh-400px)]"
   >
     {messages.map(
       (message, index) =>
@@ -164,7 +168,7 @@ const ChatBubble: React.FC<{ message: Message }> = ({ message }) => (
         message.sender === "user"
           ? "bg-indigo-600/70 text-white"
           : "bg-gray-700/70 text-white"
-      } max-w-[75%] backdrop-blur-sm inline-block`}
+      } max-w-[85%] sm:max-w-[75%] backdrop-blur-sm inline-block text-sm sm:text-base`}
     >
       {message.text}
       {message.isTyping && <span className="animate-pulse">▋</span>}
@@ -179,14 +183,14 @@ const ChatInput: React.FC<{
   isInitialGreeting: boolean;
   sendMessage: (customMessage?: string) => Promise<void>;
 }> = ({ input, setInput, handleKeyPress, isInitialGreeting, sendMessage }) => (
-  <div className="flex items-center space-x-2 mt-4">
-    <div className="flex-grow bg-gray-800/50 w-[20rem] rounded-lg overflow-hidden backdrop-blur-sm">
+  <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 mt-4">
+    <div className="flex-grow bg-gray-800/50 w-full sm:w-[20rem] rounded-lg overflow-hidden backdrop-blur-sm">
       <input
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyPress={handleKeyPress}
-        className="w-full bg-transparent text-white px-4 py-2 focus:outline-none"
+        className="w-full bg-transparent text-white px-4 py-2 focus:outline-none text-sm sm:text-base"
         placeholder={
           isInitialGreeting
             ? "Send Greetings By Pressing Enter"
@@ -199,6 +203,7 @@ const ChatInput: React.FC<{
         sendMessage(isInitialGreeting ? "Hi How are you?" : undefined)
       }
       white
+      className="w-full sm:w-auto"
     >
       SEND
     </Button>
