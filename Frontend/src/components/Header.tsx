@@ -5,6 +5,7 @@ import MenuSvg from "../assets/svg/MenuSvg";
 import { HamburgerMenu } from "./design/Header";
 import SignUp from "./SignUp";
 import Login from "./Login";
+import { cosmicdaily } from "../assets";
 
 const Header: React.FC = () => {
   const [openNavigation, setOpenNavigation] = useState(false);
@@ -60,7 +61,7 @@ const Header: React.FC = () => {
           <a className="block w-[12rem] xl:mr-8" href="#hero">
             <div className="aspect-w-16 aspect-h-9">
               <img
-                src="../public/Logo2.png"
+                src={cosmicdaily}
                 alt="Logo"
                 className="object-contain w-full h-full"
               />
@@ -96,10 +97,16 @@ const Header: React.FC = () => {
       </div>
 
       {showSignUp && (
-        <SignUp onClose={handleCloseModal} onSwitchToLogin={handleSwitchToLogin} />
+        <SignUp
+          onClose={handleCloseModal}
+          onSwitchToLogin={handleSwitchToLogin}
+        />
       )}
       {showLogin && (
-        <Login onClose={handleCloseModal} onSwitchToSignUp={handleSwitchToSignUp} />
+        <Login
+          onClose={handleCloseModal}
+          onSwitchToSignUp={handleSwitchToSignUp}
+        />
       )}
     </>
   );
