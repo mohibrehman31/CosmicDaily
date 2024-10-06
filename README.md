@@ -25,10 +25,11 @@
 
 ## Features
 
+- Interactive Cosmo's AI chatbot for any information on NASA's directory.
 - Daily space images and information from NASA's APOD API
-- Latest news about space exploration and astronomy
-- Interactive 3D model of the solar system
-- User accounts for saving favorite images and articles
+- Latest information about space exploration and astronomy
+- Interactive 3D model of Asteroid
+- User accounts for saving Ai Conversation.
 - Mobile-responsive design for on-the-go cosmic updates
 
 ## Getting Started
@@ -37,7 +38,6 @@
 
 - Node.js (v14.x or later)
 - npm (v6.x or later)
-- MongoDB (v4.x or later)
 
 ### Installation
 
@@ -63,7 +63,7 @@
      ```
      PORT=3000
      NASA_API_KEY=your_nasa_api_key
-     JWT_SECRET=your_jwt_secret
+     NODE_ENV=development
      ```
 
 4. Start the development servers:
@@ -76,8 +76,28 @@
    npm run dev
    ```
 
-5. Open your browser and navigate to `http://localhost:3000` For Backend.
-   `http://localhost:5173/` For Frontend.
+5. Accessing Your Application
+
+To interact with your application, you'll need to open two separate URLs in your web browser - one for the backend and one for the frontend.
+
+## Backend Access
+1. Open your web browser
+2. Navigate to: `http://localhost:3000`
+3. This will connect you to the backend server
+
+## Frontend Access
+1. Open a new tab or window in your web browser
+2. Navigate to: `http://localhost:5173/`
+3. This will load the frontend user interface
+
+**Note:** Ensure that both your backend and frontend servers are running before attempting to access these URLs. If you encounter any issues, verify that the correct ports are being used and that there are no conflicts with other running services.
+
+## Quick Access Links
+For convenience, you can click on these links if you're viewing this on the same device:
+
+- [Open Backend](http://localhost:3000)
+- [Open Frontend](http://localhost:5173/)
+
 
 ## Achievements
 
@@ -107,8 +127,8 @@
 
 - Node.js
 - Express
-- MongoDB with Mongoose
 - JSON Web Tokens (for authentication)
+- Rasa Chat Bot
 
 ## Architecture
 
@@ -116,7 +136,6 @@ CosmicDaily follows a client-server architecture:
 
 - The frontend is a Single Page Application (SPA) built with React
 - The backend is a RESTful API built with Node.js and Express
-- Data is stored in a MongoDB database
 - Authentication is handled using JWT
 
 ## Contributing
