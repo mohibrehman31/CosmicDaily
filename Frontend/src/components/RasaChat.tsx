@@ -170,14 +170,13 @@ const ChatInput: React.FC<{
   setInput: React.Dispatch<React.SetStateAction<string>>;
   isInitialGreeting: boolean;
   sendMessage: (customMessage?: string) => Promise<void>;
-}> = ({ input, setInput, handleKeyPress, isInitialGreeting, sendMessage }) => (
+}> = ({ input, setInput, isInitialGreeting, sendMessage }) => (
   <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 mt-4">
     <div className="flex-grow bg-gray-800/50 w-full sm:w-[20rem] rounded-lg overflow-hidden backdrop-blur-sm">
       <input
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        onKeyPress={handleKeyPress}
         className="w-full bg-transparent text-white px-4 py-2 focus:outline-none text-sm sm:text-base"
         placeholder={
           isInitialGreeting
