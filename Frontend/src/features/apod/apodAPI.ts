@@ -1,7 +1,6 @@
 import axios from "axios";
 import { ApodData } from "../../types/types";
-
-const BASE_URL = "https://cosmic-daily.vercel.app/v1";
+const BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/v1`;
 
 export const fetchApodData = async (): Promise<ApodData> => {
   try {

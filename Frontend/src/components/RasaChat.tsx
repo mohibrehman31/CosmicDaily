@@ -45,7 +45,7 @@ const RasaChat: React.FC = () => {
       setMessages(parsedMessages);
       setIsChatboxOpen(true);
       setIsInitialGreeting(false);
-      setHasOldMessages(false); // Hide the button after loading old messages
+      setHasOldMessages(false);
     }
   };
 
@@ -107,16 +107,6 @@ const RasaChat: React.FC = () => {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      sendMessage(
-        isInitialGreeting
-          ? "Hi which planets are closest to the sun?"
-          : undefined
-      );
-    }
-  };
-
   return (
     <div className="flex flex-col w-full max-w-[40rem] mx-auto p-2 sm:p-4 h-full">
       {hasOldMessages && messages.length === 0 && (
@@ -134,7 +124,6 @@ const RasaChat: React.FC = () => {
       <ChatInput
         input={input}
         setInput={setInput}
-        handleKeyPress={handleKeyPress}
         isInitialGreeting={isInitialGreeting}
         sendMessage={sendMessage}
       />
@@ -179,7 +168,6 @@ const ChatBubble: React.FC<{ message: Message }> = ({ message }) => (
 const ChatInput: React.FC<{
   input: string;
   setInput: React.Dispatch<React.SetStateAction<string>>;
-  handleKeyPress: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   isInitialGreeting: boolean;
   sendMessage: (customMessage?: string) => Promise<void>;
 }> = ({ input, setInput, handleKeyPress, isInitialGreeting, sendMessage }) => (
