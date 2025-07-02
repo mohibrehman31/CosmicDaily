@@ -5,7 +5,6 @@ import { Message, sendMessageToRasa } from "../utils/chatUtils";
 
 const RasaChat = () => {
   const [input, setInput] = useState<string>("");
-  const messagesRef = useRef<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isChatboxOpen, setIsChatboxOpen] = useState(false);
