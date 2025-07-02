@@ -146,7 +146,7 @@ const ChatBubble: React.FC<{ message: Message }> = ({ message }) => (
         message.sender === "user"
           ? "bg-indigo-600/70 text-white"
           : "bg-gray-700/70 text-white"
-      } max-w-[85%] sm:max-w-[75%] backdrop-blur-sm inline-block text-sm sm:text-base`}
+      } break-words max-w-[85%] sm:max-w-[75%] backdrop-blur-sm inline-block text-sm sm:text-base`}
     >
       {message.text}
       {message.isTyping && <span className="animate-pulse">▋</span>}

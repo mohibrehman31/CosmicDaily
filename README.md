@@ -106,7 +106,6 @@ For convenience, you can click on these links if you're viewing this on the same
 - 🌟 Developed an interactive 3D model of the solar system using Three.js
 - 👥 Implemented user authentication and account management system
 - 📱 Designed and built a fully responsive mobile-first user interface
-- 💻 Achieved 95% test coverage across both frontend and backend codebases
 - ⚡ Optimized frontend performance, achieving a 98/100 Lighthouse performance score
 - 📦 Reduced bundle size by 30% through code splitting and lazy loading techniques
 
