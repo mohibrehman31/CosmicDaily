@@ -5,24 +5,14 @@ export interface Message {
 }
 
 export const sendMessageToRasa = async (message: string) => {
-  const response = await fetch(
-    `${import.meta.env.VITE_CHATBOT_URL}/rasa/webhooks/rest/webhook`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        sender: "user",
-        message: message,
-      }),
-    }
-  );
-  return response.json();
-};
-
-export const simulateSlowResponse = (text: string) => {
-  return new Promise<string>((resolve) => {
-    setTimeout(() => resolve(text), 2000 + Math.random() * 2000);
+  const response = await fetch(`${import.meta.env.VITE_CHATBOT_URL}/nasa_api`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      user_input: message,
+    }),
   });
+  return response;
 };

@@ -1,14 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import Button from "./Button";
 import AIGeneratingIndicator from "./AIGenereating";
-import {
-  Message,
-  sendMessageToRasa,
-  simulateSlowResponse,
-} from "../utils/chatUtils";
+import { Message, sendMessageToRasa } from "../utils/chatUtils";
 
-const RasaChat: React.FC = () => {
-  const [input, setInput] = useState("");
+const RasaChat = () => {
+  const [input, setInput] = useState<string>("");
+  const messagesRef = useRef<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isChatboxOpen, setIsChatboxOpen] = useState(false);
@@ -56,54 +53,47 @@ const RasaChat: React.FC = () => {
     }
   };
 
-  const typeMessage = (message: string, index: number = 0) => {
-    if (index <= message.length) {
-      setMessages((prevMessages) => [
-        ...prevMessages.slice(0, -1),
-        { sender: "bot", text: message.slice(0, index), isTyping: true },
-      ]);
-      setTimeout(() => typeMessage(message, index + 1), 50);
-    } else {
-      setMessages((prevMessages) => [
-        ...prevMessages.slice(0, -1),
-        { sender: "bot", text: message, isTyping: false },
-      ]);
-      setIsGenerating(false);
-    }
-  };
-
   const sendMessage = async (customMessage?: string) => {
     const messageToSend = customMessage || input;
     if (messageToSend.trim() === "") return;
-
-    updateChatState(messageToSend);
     setHasOldMessages(false);
-
+    setMessages((prev) => {
+      return [
+        ...prev,
+        { sender: "user", text: messageToSend, isTyping: false },
+        { sender: "bot", text: "", isTyping: false },
+      ];
+    });
+    setInput("");
     try {
       const data = await sendMessageToRasa(messageToSend);
-      await handleBotResponses(data);
+      const reader = data.body.pipeThrough(new TextDecoderStream()).getReader();
+      if (reader) setIsGenerating(true);
+      let incommingMessage: string = "";
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          setIsGenerating(false);
+          break;
+        }
+        if (value) {
+          incommingMessage += value;
+          console.log(messages);
+          setMessages((prev) => {
+            const lastMessage = [...prev];
+            lastMessage[lastMessage.length - 1] = {
+              ...lastMessage[lastMessage.length - 1],
+              isTyping: false,
+              sender: "bot",
+              text: incommingMessage,
+            };
+            return lastMessage;
+          });
+        }
+      }
     } catch (error) {
       console.error("Error:", error);
       setIsGenerating(false);
-    }
-  };
-
-  const updateChatState = (message: string) => {
-    setMessages((prev) => [...prev, { sender: "user", text: message }]);
-    setInput("");
-    setIsGenerating(true);
-    setIsChatboxOpen(true);
-    setIsInitialGreeting(false);
-  };
-
-  const handleBotResponses = async (responses: any[]) => {
-    for (const msg of responses) {
-      const slowResponse = await simulateSlowResponse(msg.text);
-      setMessages((prev) => [
-        ...prev,
-        { sender: "bot", text: "", isTyping: true },
-      ]);
-      typeMessage(slowResponse);
     }
   };
 
@@ -186,9 +176,7 @@ const ChatInput: React.FC<{
       />
     </div>
     <Button
-      onClick={() =>
-        sendMessage(isInitialGreeting ? "Hi How are you?" : undefined)
-      }
+      onClick={() => sendMessage(input || undefined)}
       white
       className="w-full sm:w-auto"
     >
